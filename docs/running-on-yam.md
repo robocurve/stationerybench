@@ -7,7 +7,7 @@ and policy configuration; the mock policies are for the abstract mock only.
 
 ```bash
 # from a rig directory with ./run and config.ini
-uv pip install stationerybench        # into the rig venv
+uv pip install "stationerybench @ git+https://github.com/robocurve/stationerybench"  # into the rig venv
 inspect-robots list tasks             # shows stationerybench/*
 # VLA (MolmoAct2 /act server running):
 ./run --task stationerybench/uncap_marker --epochs 20 -E auto_start=false

@@ -14,7 +14,7 @@ MP4 demonstrations are in the [task reference](https://robocurve.github.io/stati
 Install from PyPI and run two trials on the bundled mock:
 
 ```bash
-uv pip install stationerybench
+uv pip install "stationerybench @ git+https://github.com/robocurve/stationerybench"
 inspect-robots list tasks
 inspect-robots run --task stationerybench/uncap_marker --policy stationery_scripted --embodiment stationery --epochs 2
 ```
@@ -55,7 +55,7 @@ and policy configuration; the mock policies are for the abstract mock only.
 
 ```bash
 # from a rig directory with ./run and config.ini
-uv pip install stationerybench        # into the rig venv
+uv pip install "stationerybench @ git+https://github.com/robocurve/stationerybench"  # into the rig venv
 inspect-robots list tasks             # shows stationerybench/*
 # VLA (MolmoAct2 /act server running):
 ./run --task stationerybench/uncap_marker --epochs 20 -E auto_start=false
