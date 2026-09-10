@@ -1,0 +1,63 @@
+site_name: StationeryBench
+site_description: >-
+  Five bimanual desk-stationery manipulation tasks for VLA models and LLM agents, built on Inspect Robots.
+site_url: https://robocurve.github.io/stationerybench/
+repo_url: https://github.com/robocurve/stationerybench
+repo_name: robocurve/stationerybench
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; StationeryBench contributors
+
+theme:
+  name: material
+  icon:
+    logo: material/pencil-ruler
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Running on YAM arms: running-on-yam.md
+  - Tasks:
+      - "Uncap the marker": tasks/uncap_marker.md
+      - "Open the box, take out an eraser, close the lid": tasks/eraser_from_box.md
+      - "Pull the middle sticky pad from a stack": tasks/middle_sticky_pad.md
+      - "Pour paper clips into a lifted bowl": tasks/pour_paperclips.md
+      - "Hand a ruler between arms, cup to cup": tasks/ruler_handover.md

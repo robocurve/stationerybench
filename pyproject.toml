@@ -1,0 +1,150 @@
+[build-system]
+requires = ["hatchling>=1.18", "hatch-vcs>=0.3", "hatch-fancy-pypi-readme>=24.1"]
+build-backend = "hatchling.build"
+
+[project]
+name = "stationerybench"
+dynamic = ["version", "readme"]
+description = "Five bimanual desk-stationery manipulation tasks for VLA models and LLM agents, built on Inspect Robots."
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "RoboCurve" }]
+keywords = ["robotics", "benchmark", "vla", "bimanual", "stationery", "manipulation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Typing :: Typed",
+]
+dependencies = ["inspect-robots>=0.58", "numpy>=1.24"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "pre-commit>=3.5",
+]
+docs = [
+    # <2: MkDocs 2.0 removes the plugin/theming systems with no migration path
+    # (see the Material team's 2026-02 notice); a lock upgrade must not pull it.
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/robocurve/stationerybench"
+Documentation = "https://robocurve.github.io/stationerybench/"
+Collection = "https://github.com/robocurve/worldevals"
+Framework = "https://github.com/robocurve/inspect-robots"
+
+# Inspect Robots resolves from PyPI and discovers these installed entry points.
+[project.entry-points."inspect_robots.tasks"]
+"stationerybench/uncap_marker" = "stationerybench.tasks:uncap_marker"
+"stationerybench/eraser_from_box" = "stationerybench.tasks:eraser_from_box"
+"stationerybench/middle_sticky_pad" = "stationerybench.tasks:middle_sticky_pad"
+"stationerybench/pour_paperclips" = "stationerybench.tasks:pour_paperclips"
+"stationerybench/ruler_handover" = "stationerybench.tasks:ruler_handover"
+
+[project.entry-points."inspect_robots.embodiments"]
+stationery = "stationerybench.embodiment:StationeryEmbodiment"
+
+[project.entry-points."inspect_robots.policies"]
+stationery_scripted = "stationerybench.policies:ScriptedStationeryPolicy"
+stationery_random = "stationerybench.policies:RandomStationeryPolicy"
+stationery_noop = "stationerybench.policies:NoopStationeryPolicy"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stationerybench"]
+
+
+# ---------------------------------------------------------------------------
+# Versioning: single-source the version from git tags via hatch-vcs (the
+# release workflow cuts a vX.Y.Z tag; nothing is committed to main).
+# ---------------------------------------------------------------------------
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.version.raw-options]
+# Before/without tags (e.g. shallow CI checkouts), fall back instead of failing.
+version_scheme = "guess-next-dev"
+fallback_version = "0.0.0"
+
+[tool.ruff]
+# Plan files hold illustrative code blocks, not linted source.
+extend-exclude = ["plans"]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM", "RUF", "D1"]
+ignore = ["D105", "D107"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D1"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["stationerybench"]
+
+[tool.mypy]
+# numpy >= 2.5 ships stubs that use PEP 695 `type` statements, which mypy only
+# accepts when targeting >= 3.12 — so type-check against 3.12 while runtime
+# support stays >= 3.10 (ruff's target-version enforces the 3.10 syntax floor).
+python_version = "3.12"
+strict = true
+files = ["src/stationerybench"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+
+[tool.coverage.run]
+branch = true
+source = ["stationerybench"]
+
+[tool.coverage.report]
+fail_under = 100
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "@(abc\\.)?abstractmethod",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "^\\s*\\.\\.\\.$",
+    ": \\.\\.\\.$",
+    "pragma: no cover",
+]
+
+# PyPI readme: identical to README.md except GitHub-only alert syntax
+# (e.g. `> [!NOTE]`) is rewritten to bold blockquotes, which PyPI renders.
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = "text/markdown"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+path = "README.md"
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = '(?m)^> \[!NOTE\][ \t]*$'
+replacement = '> **Note:**'
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = '(?m)^> \[!TIP\][ \t]*$'
+replacement = '> **Tip:**'
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = '(?m)^> \[!IMPORTANT\][ \t]*$'
+replacement = '> **Important:**'
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = '(?m)^> \[!WARNING\][ \t]*$'
+replacement = '> **Warning:**'
+
+[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+pattern = '(?m)^> \[!CAUTION\][ \t]*$'
+replacement = '> **Caution:**'

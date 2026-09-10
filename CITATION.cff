@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "StationeryBench: Five bimanual desk-stationery manipulation tasks for VLA models and LLM agents"
+authors:
+  - name: "RoboCurve"
+type: software
+license: MIT
+repository-code: "https://github.com/robocurve/stationerybench"
+version: "0.1.0"
